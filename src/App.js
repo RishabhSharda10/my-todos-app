@@ -1,23 +1,54 @@
-import logo from './logo.svg';
+import  React, {useState,useEffect}  from 'react';
+import Todoform from './components/TodoForm';
+import Todolist from './components/TodoList';
 import './App.css';
+import TodoForm from './components/TodoForm';
+import axios from 'axios' 
+
+
+
+
+
 
 function App() {
+
+  const [todos, settodos] = useState([]);
+
+  useEffect(() => {
+
+      axios.get('http://localhost:5000/todos/')
+        .then(function (response) {
+          settodos(response.data);
+        })
+
+
+    },[todos]);
+
+
+  const addTodoMethod = (newTodo) =>{
+
+
+
+    axios.post('http://localhost:5000/todos/',newTodo)
+    .then(function (response) {
+
+      const updatedTodos = [
+        ...todos,response.data
+  
+      ] 
+      settodos(updatedTodos);
+    });    
+
+  }    
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React from scratch 1111
-        </a>
-      </header>
+    <div className="container">
+
+      <TodoForm addTodoMethod={addTodoMethod}/>
+      <Todolist  todos={todos} />
+
+
     </div>
   );
 }
