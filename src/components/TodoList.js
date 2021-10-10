@@ -1,36 +1,26 @@
-import {Card,Layout} from 'antd';
-
+import {Card} from 'antd';
 import 'antd/dist/antd.css';
 import '../App.css'
 
+import Todo from './Todo';
+
 function TodoList(props) {
 
-    const { Header, Footer, Sider, Content } = Layout;
 
-    const gridStyle = {
-        width: '33%',
-        textAlign: 'center',
-      };
-      
 
- const {todos} = props;
+ const {todos,deleteTodoMethod} = props;
 
     return (
             <div>
-                        <Card title="Card Title">
-                        {
-                            todos.map((todo,index)=>{
-                            
-                                return (
-                                    
-                                    <Card.Grid style={gridStyle} key={index}>
-                                        {todo.title}
-                                    </Card.Grid>
-                                )
-                            
-                            })
-                        }
-                        </Card>
+                {
+                    todos.map((todo,index)=>{
+                    
+                        return (
+                            <Todo deleteTodoMethod={deleteTodoMethod} todo={todo} key={index} />
+                        )
+                    
+                    })
+                }
                 
             </div>
     )
