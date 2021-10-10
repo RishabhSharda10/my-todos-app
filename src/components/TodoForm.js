@@ -22,7 +22,8 @@ function TodoForm(props) {
 
         addTodoMethod({
             text:input,
-            completed:false
+            current:0,
+
 
 
         });

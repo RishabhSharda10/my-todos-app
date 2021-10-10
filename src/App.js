@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
 
-      axios.get('http://localhost:5000/todos/')
+      axios.get('https://6163510bb55edc00175c1a3a.mockapi.io/Todos')
         .then(function (response) {
           settodos(response.data);
         })
@@ -27,26 +27,31 @@ function App() {
 
     
 
-    const setCompletedMethod = (deltodo) =>{
+    const setCurrentMethod = (newTodo,newCurrrent) =>{
 
-
-      axios.put('http://localhost:5000/todos/'+deltodo.id+'/',{
-
+      axios.put('https://6163510bb55edc00175c1a3a.mockapi.io/api/rishabh/Todos/'+newTodo.id+'/',{...newTodo,
+      current: newCurrrent
       })
       .then(function (response) {
   
-        const updatedTodos = todos.map((todo,index)=>{
+        const updatedTodos = todos.map((todo,i)=>{
   
-          if  (deltodo.id ===deltodo.id ){
-
-            return 
-
+          if  (todo.id === newTodo.id){
+  
+            return {
+              ...todo,
+              current: newCurrrent
+  
+            };
+  
+  
           }
-          return todos;
   
-        })
+          return todo;
+  
+        });
+        
 
-  
         settodos(updatedTodos);
       });    
   
@@ -58,7 +63,7 @@ function App() {
 
 
 
-    axios.post('http://localhost:5000/todos/',newTodo)
+    axios.post('https://6163510bb55edc00175c1a3a.mockapi.io/api/rishabh/Todos/',newTodo)
     .then(function (response) {
 
       const updatedTodos = [
@@ -74,7 +79,7 @@ function App() {
 
 
 
-    axios.delete('http://localhost:5000/todos/'+todoID+'/',)
+    axios.delete('https://6163510bb55edc00175c1a3a.mockapi.io/api/rishabh/Todos/'+todoID+'/',)
     .then(function (response) {
 
       const updatedTodos = todos.filter((todo,index)=>{
@@ -103,18 +108,7 @@ function App() {
         gutter={[0, 20]}
         className="todos-container"
       >
-        <Col
-          xs={{ span: 23 }}
-          sm={{ span: 23 }}
-          md={{ span: 21 }}
-          lg={{ span: 20 }}
-          xl={{ span: 18 }}
-        >
-          <PageHeader
-            title="Add Todo"
-            subTitle="To add a todo, just fill the form below and click in add todo."
-          />
-        </Col>
+     
 
         <Col
           xs={{ span: 23 }}
@@ -123,22 +117,15 @@ function App() {
           lg={{ span: 20 }}
           xl={{ span: 18 }}
         >
-          <Card title="Create a new todo">
+          <Card style={{marginTop:"50px"}}>
+          <Title level={2} align="center"style={{color:"#000"}}>Todo list</Title>
             <TodoForm addTodoMethod={addTodoMethod}/>
+            <Todolist setCurrentMethod={setCurrentMethod} deleteTodoMethod={deleteTodoMethod} todos={todos} />  
+
           </Card>
         </Col>
 
-        <Col
-          xs={{ span: 23 }}
-          sm={{ span: 23 }}
-          md={{ span: 21 }}
-          lg={{ span: 20 }}
-          xl={{ span: 18 }}
-        >
-          <Card title="Todo List">
-            <Todolist deleteTodoMethod={deleteTodoMethod} todos={todos} />  
-          </Card>
-        </Col>
+
       </Row>
     
       </Content>

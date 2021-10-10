@@ -1,42 +1,76 @@
 import React,{useState} from 'react'
-import {Card,Layout,Switch,Space } from 'antd';
+import {Switch,Steps,Space,Popconfirm,Divider  } from 'antd';
 import 'antd/dist/antd.css';
 import '../App.css'
-import { PlusCircleFilled, FormOutlined, MinusCircleOutlined,CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { ScheduleOutlined, MinusCircleOutlined,CloseOutlined, CheckOutlined } from '@ant-design/icons';
 
 
 function Todo(props) {
 
+
     const [Edit, setEdit] = useState(false);
-    const {todo,deleteTodoMethod,setCompletedMethod} = props;
+    const {todo,deleteTodoMethod,setCurrentMethod} = props;
+    const [current, setCurrent] = useState(todo.current);
+    const [visible, setVisible] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const { Step } = Steps;
 
 
-     const onChangeCompleted = (checked) => {
-        
-        setCompletedMethod(todo);
+    const handleOk = () => {
+      setConfirmLoading(true);
+      setTimeout(() => {
+      setVisible(false);
+      setConfirmLoading(false);
+      deleteTodoMethod(todo.id)
+      }, 1000);
+    };
 
-      }
-      
+    const onChangeStep = current => {
+      setCurrent(current);
+      setCurrentMethod(todo,current);
 
 
-    const gridStyle = {
-        textAlign: 'center',
-        flex:1
+    };
+  
+    const handleCancel = () => {
+      setVisible(false);
+    };
+
+
+
+      const showPopconfirm = () => {
+        setVisible(true);
       };
+    
       
-
 
     return (
         <>
 
-            <Card.Grid  style={gridStyle} >
             <Space>
-            <span className={todo.Completed ? "strikeOut" : ""}>{todo.text}</span>
-            <span><Switch size="small" onChange={onChangeCompleted} checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} /></span>
-            <span onClick={()=>deleteTodoMethod(todo.id)}><MinusCircleOutlined style={{marginTop:"9px",  fontSize: '18px', color: 'red', cursor:'pointer' }} /></span>
-            <span><FormOutlined style={{ marginTop:"9px", fontSize: '18px', color: 'gray', cursor:'pointer' }} /></span>
+              <span>{todo.text}</span>
+              {/* <span>
+                <Switch size="small" defaultChecked={todo.completed ? true : false}  onChange={onChangeCompleted} checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} />
+              </span> */}
+              <Popconfirm  title="Title"
+                visible={visible}
+                onConfirm={handleOk}
+                okButtonProps={{ loading: confirmLoading }}
+                onCancel={handleCancel}
+                title="Are you sure？" okText="Yes" cancelText="No">
+                <span onClick={showPopconfirm}>
+                  <MinusCircleOutlined style={{  fontSize: '18px', float:"right", color: 'red', cursor:'pointer' }} />
+                </span>
+              </Popconfirm>
+
             </Space>
-            </Card.Grid>
+
+            <Divider/>
+            <Steps  current={current} size="small" onChange={onChangeStep}  >
+              <Step title="Waiting" description=""  />
+              <Step title="In Progress" description=""  />
+              <Step title="Finished" description="" icon={<ScheduleOutlined />}/>
+            </Steps>            
         </>
     )
 }

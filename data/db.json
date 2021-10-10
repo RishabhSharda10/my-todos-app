@@ -1,14 +1,14 @@
 {
   "todos": [
     {
-      "text": "eeewe",
-      "completed": false,
-      "id": 1
+      "text": "Sleeping",
+      "current": 0,
+      "id": 2
     },
     {
-      "text": "dwwwef",
-      "completed": false,
-      "id": 2
+      "text": "Eating ",
+      "current": 1,
+      "id": 3
     }
   ]
 }
