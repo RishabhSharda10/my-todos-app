@@ -7,7 +7,6 @@ import { PlusCircleFilled} from '@ant-design/icons';
 
 function TodoForm(props) {
     const [form] = Form.useForm();
-
     const [input, setInput] = useState('');
     const {addTodoMethod} = props;
 
